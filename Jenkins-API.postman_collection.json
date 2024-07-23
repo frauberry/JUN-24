@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "/quiz - [T] Creates new quiz",
+			"name": "/sign-in - [T]",
 			"event": [
 				{
 					"listen": "test",
@@ -17,16 +17,17 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Response time is less than 2000 ms\", function () {\r",
-							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"pm.test(\"Response time is less than 500 ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
 							"});\r",
 							"\r",
+							"pm.test(\"Body matches user role - TEACHER\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"TEACHER\");\r",
+							"});\r",
 							"\r",
 							"var jsonData = pm.response.json();\r",
-							"pm.environment.set(\"quizId\", jsonData.id);\r",
 							"\r",
-							"\r",
-							""
+							"pm.environment.set(\"teacherToken\", jsonData.token);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -34,21 +35,11 @@
 				}
 			],
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{teacherToken}}",
-							"type": "string"
-						}
-					]
-				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"Demo Olga Black 07/19/24\",\r\n  \"totalScore\": 18,\r\n  \"passingPercentage\": 75,\r\n  \"showStopperQuestion\": 1,\r\n  \"questions\": [\r\n    {\r\n      \"type\": \"TEXTUAL\",\r\n      \"question\": \"What is your name?\",\r\n      \"score\": 5\r\n    },\r\n    {\r\n      \"type\": \"SINGLE_CHOICE\",\r\n      \"question\": \"Which city is city largest in California?\",\r\n      \"score\": 7,\r\n      \"answer\": 2,\r\n      \"hasOtherOption\": false,\r\n      \"options\": [\r\n        \"San Francisco\",\r\n        \"Sacramento\",\r\n        \"Los Angeles\",\r\n        \"Redding\"\r\n      ]\r\n    },\r\n    {\r\n      \"type\": \"MULTIPLE_CHOICE\",\r\n      \"question\": \"Who was apple founded by?\",\r\n      \"score\": 6,\r\n      \"answers\": [\r\n        0,\r\n        1,\r\n        2\r\n      ],\r\n      \"hasOtherOption\": true,\r\n      \"options\": [\r\n        \"Steve Jobs\",\r\n        \"Steve Wozniak\",\r\n        \"Ronald Wayne\",\r\n        \"Ronald Reagan\"\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"raw": "{\r\n  \"email\": \"qa1@test.com\",\r\n  \"password\": \"ABC123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -56,12 +47,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/quiz",
+					"raw": "{{baseUrl}}/sign-in",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"quiz"
+						"sign-in"
 					]
 				}
 			},
